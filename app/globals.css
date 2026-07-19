@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Lokaa Brand Palette */
+    --navy: 220 55% 11%;          /* #0B1E39 */
+    --navy-deep: 220 60% 7%;
+    --gold: 37 45% 58%;           /* #C9A66B */
+    --gold-soft: 37 60% 72%;
+    --graphite: 219 12% 19%;      /* #2A2E35 */
+    --ivory: 40 33% 97%;          /* #FAF8F4 */
+    --elegant-blue: 220 80% 42%;
+
+    /* Shadcn tokens mapped to brand */
+    --background: 40 33% 97%;
+    --foreground: 220 55% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 55% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 55% 11%;
+    --primary: 220 55% 11%;
+    --primary-foreground: 40 33% 97%;
+    --secondary: 37 45% 58%;
+    --secondary-foreground: 220 55% 11%;
+    --muted: 220 15% 94%;
+    --muted-foreground: 219 12% 40%;
+    --accent: 37 45% 58%;
+    --accent-foreground: 220 55% 11%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 37 45% 58%;
+    --radius: 0.5rem;
+  }
+
+  * { border-color: hsl(var(--border)); }
+  body {
+    background-color: hsl(var(--ivory));
+    color: hsl(var(--navy));
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  ::selection { background: hsl(var(--gold) / 0.35); color: hsl(var(--navy)); }
+}
+
+@layer utilities {
+  .font-display { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.02em; }
+  .font-body { font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .text-navy { color: hsl(var(--navy)); }
+  .text-gold { color: hsl(var(--gold)); }
+  .text-graphite { color: hsl(var(--graphite)); }
+  .bg-navy { background-color: hsl(var(--navy)); }
+  .bg-navy-deep { background-color: hsl(var(--navy-deep)); }
+  .bg-gold { background-color: hsl(var(--gold)); }
+  .bg-ivory { background-color: hsl(var(--ivory)); }
+  .border-gold { border-color: hsl(var(--gold)); }
+  .border-navy { border-color: hsl(var(--navy)); }
+  .ring-gold { --tw-ring-color: hsl(var(--gold)); }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-soft)) 100%);
+  }
+  .navy-gradient {
+    background: linear-gradient(180deg, hsl(var(--navy-deep)) 0%, hsl(var(--navy)) 100%);
+  }
+  .hero-overlay {
+    background: linear-gradient(180deg, hsl(var(--navy-deep) / 0.85) 0%, hsl(var(--navy) / 0.7) 45%, hsl(var(--navy-deep) / 0.92) 100%);
+  }
+  .glass {
+    background: hsl(var(--navy-deep) / 0.55);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+  }
+  .glass-light {
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid hsl(var(--navy) / 0.06);
+  }
+  .premium-shadow { box-shadow: 0 30px 80px -30px hsl(var(--navy) / 0.35), 0 8px 20px -10px hsl(var(--navy) / 0.15); }
+  .grain::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .text-balance { text-wrap: balance; }
+  .divider-gold {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
+  }
+
+  @keyframes dashmove { to { stroke-dashoffset: -100; } }
+  .route-dash { stroke-dasharray: 6 10; animation: dashmove 3s linear infinite; }
+
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .float-slow { animation: float 6s ease-in-out infinite; }
+
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  .shimmer-text {
+    background: linear-gradient(90deg, hsl(var(--gold)) 0%, hsl(var(--gold-soft)) 40%, #fff8e2 50%, hsl(var(--gold-soft)) 60%, hsl(var(--gold)) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shimmer 5s linear infinite;
+  }
+}

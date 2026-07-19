@@ -1,0 +1,12 @@
+{
+  "fullName": "Test Buyer",
+  "email": "test+dev@local.test",
+  "phone": "+971 50 123 4567",
+  "company": "TestCo LLC",
+  "country": "United Arab Emirates",
+  "productInterest": "Sample Product",
+  "quantity": "1000 kg",
+  "incoterms": "CIF",
+  "targetPort": "Jebel Ali",
+  "message": "Automated test RFQ"
+}

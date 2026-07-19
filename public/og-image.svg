@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#04111F"/>
+      <stop offset="100%" stop-color="#0F2C42"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F4D06F"/>
+      <stop offset="100%" stop-color="#DDA42F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="60" y="120" width="1080" height="390" rx="36" fill="rgba(255,255,255,0.04)"/>
+  <rect x="120" y="180" width="600" height="300" rx="24" fill="rgba(255,255,255,0.08)"/>
+  <rect x="740" y="180" width="320" height="280" rx="24" fill="rgba(221,180,47,0.16)"/>
+  <text x="120" y="270" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="700">Lokaa Global Exports</text>
+  <text x="120" y="360" fill="#D9D9D9" font-family="Inter, Arial, sans-serif" font-size="42">Connecting India’s finest to global markets</text>
+  <circle cx="930" cy="320" r="90" fill="url(#shine)" opacity="0.7"/>
+</svg>

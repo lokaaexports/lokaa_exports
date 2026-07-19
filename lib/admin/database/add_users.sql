@@ -1,0 +1,1 @@
+-- Users can be added manually or through the application UI
