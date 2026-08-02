@@ -50,7 +50,7 @@ async function main() {
   // Seed Super Admin Users directly
   console.log('👤 Seeding default Super Admin users...');
   const bcrypt = await import('bcryptjs');
-  const targetPassword = await bcrypt.hash('Lokaa2026!', 10);
+  const targetPassword = await bcrypt.hash('Lokaa@2026', 10);
 
   // Find or create Super Admin Role
   let superAdminRole = await prisma.role.findFirst({
