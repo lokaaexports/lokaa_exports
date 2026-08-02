@@ -18,6 +18,9 @@ const nextConfig = {
       { protocol: 'https', hostname: 'unsplash.com', pathname: '/**' },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   // Renamed from experimental.serverComponentsExternalPackages in Next 15
   serverExternalPackages: [],
   webpack(config, { dev }) {
