@@ -92,37 +92,37 @@ export default function Nav({ theme = 'auto', categories = [] }: any) {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-0 inset-x-0 z-50 transition-all duration-500 bg-[#04070c] backdrop-blur-xl border-b border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.3)] py-2"
+        className="fixed top-0 inset-x-0 z-50 transition-all duration-500 bg-[#04070c]/90 backdrop-blur-md border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.15)] py-1.5 lg:py-2"
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 flex-shrink-0 flex items-center justify-center">
-              <Image src="/logo.png" alt="Lokaa Exports" width={40} height={40} className="object-contain" priority />
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="relative w-8 h-8 lg:w-9 lg:h-9 flex-shrink-0 flex items-center justify-center">
+              <Image src="/logo.png" alt="Lokaa Exports" width={36} height={36} className="object-contain" priority />
             </div>
-              <div className="leading-tight">
-                <div className={`font-display font-semibold tracking-tight text-[14px] ${brandColorClass}`}>{brand.label}</div>
-                <div className="text-[10px] tracking-[0.24em] text-gold uppercase">{brand.subtitle}</div>
-              </div>
+            <div className="leading-tight">
+              <div className={`font-display font-semibold tracking-tight text-[13px] lg:text-[14px] ${brandColorClass}`}>{brand.label}</div>
+              <div className="text-[8px] lg:text-[9px] tracking-[0.24em] text-gold uppercase">{brand.subtitle}</div>
+            </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-6 mx-8">
+          <nav className="hidden lg:flex items-center gap-5 mx-6">
             {LINKS.map(l => (
               <div key={l.label || l.href} className="relative group">
                 {l.dropdown ? (
-                  <button className={`text-[13px] font-medium transition-all relative whitespace-nowrap flex items-center gap-1.5 py-2 ${l.items?.some(item => pathname === item.href) ? 'text-gold' : 'text-white hover:text-white'}`}>
+                  <button className={`text-[12.5px] font-medium transition-all relative whitespace-nowrap flex items-center gap-1 py-1.5 ${l.items?.some(item => pathname === item.href) ? 'text-gold' : 'text-white hover:text-white'}`}>
                     {l.label}
-                    <ChevronDown className="w-3.5 h-3.5 opacity-70 group-hover:rotate-180 transition-transform duration-300" />
+                    <ChevronDown className="w-3 h-3 opacity-70 group-hover:rotate-180 transition-transform duration-300" />
                   </button>
                 ) : (
-                  <Link href={l.href} prefetch={l.href === '/products' || l.href.startsWith('/category/')} className={`text-[13px] font-medium transition-all relative whitespace-nowrap flex items-center gap-2 py-2 ${pathname === l.href ? 'text-gold' : 'text-white hover:text-white'}`}>
+                  <Link href={l.href} prefetch={l.href === '/products' || l.href.startsWith('/category/')} className={`text-[12.5px] font-medium transition-all relative whitespace-nowrap flex items-center gap-1.5 py-1.5 ${pathname === l.href ? 'text-gold' : 'text-white hover:text-white'}`}>
                     {l.label}
                     {'badge' in l && l.badge && (
-                      <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-gold/20 text-gold uppercase tracking-wider">
+                      <span className="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-gold/20 text-gold uppercase tracking-wider">
                         {l.badge as string}
                       </span>
                     )}
                     <motion.span 
-                      className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-gold to-gold/60 group-hover:w-full transition-all duration-400"
+                      className="absolute -bottom-0.5 left-0 h-0.5 bg-gradient-to-r from-gold to-gold/60 group-hover:w-full transition-all duration-400"
                       initial={{ width: pathname === l.href ? '100%' : '0%' }}
                       animate={{ width: pathname === l.href ? '100%' : undefined }}
                       whileHover={{ width: '100%' }}
@@ -131,17 +131,17 @@ export default function Nav({ theme = 'auto', categories = [] }: any) {
                 )}
                 
                 {l.dropdown && (
-                  <div className="absolute top-[100%] left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                    <div className="w-[600px] bg-[#04070c] border border-white/10 rounded-2xl shadow-2xl p-6 grid grid-cols-2 gap-4">
+                  <div className="absolute top-[100%] left-1/2 -translate-x-1/2 pt-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    <div className="w-[540px] bg-[#04070c] border border-white/10 rounded-2xl shadow-2xl p-5 grid grid-cols-2 gap-3">
                       {l.items.map(item => {
                         const isItemActive = pathname === item.href;
                         return (
-                        <Link key={item.href} href={item.href} className={`block p-4 rounded-xl hover:bg-white/5 transition-colors group/item ${isItemActive ? 'bg-white/5' : ''}`}>
-                          <div className={`flex items-center gap-2 font-display text-[15px] transition-colors ${isItemActive ? 'text-gold' : 'text-white group-hover/item:text-gold'}`}>
+                        <Link key={item.href} href={item.href} className={`block p-3 rounded-xl hover:bg-white/5 transition-colors group/item ${isItemActive ? 'bg-white/5' : ''}`}>
+                          <div className={`flex items-center gap-1.5 font-display text-[14px] transition-colors ${isItemActive ? 'text-gold' : 'text-white group-hover/item:text-gold'}`}>
                             {item.label}
-                            <ArrowUpRight className="w-4 h-4 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                            <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover/item:opacity-100 transition-opacity" />
                           </div>
-                          <p className={`mt-1.5 text-xs leading-relaxed ${isItemActive ? 'text-white/70' : 'text-white/50'}`}>{item.desc}</p>
+                          <p className={`mt-1 text-[11px] leading-relaxed ${isItemActive ? 'text-white/70' : 'text-white/50'}`}>{item.desc}</p>
                         </Link>
                         );
                       })}
@@ -152,30 +152,30 @@ export default function Nav({ theme = 'auto', categories = [] }: any) {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-4 ml-auto pl-4 border-l border-white/10">
-            <Link href="/auth/login" className={`text-[13px] font-medium ${navLinkClass} transition-all px-3 py-1.5 rounded hover:bg-white/5 hover:text-gold`}>
+          <div className="hidden lg:flex items-center gap-3.5 ml-auto pl-3.5 border-l border-white/10">
+            <Link href="/auth/login" className={`text-[12.5px] font-medium ${navLinkClass} transition-all px-2.5 py-1 rounded hover:bg-white/5 hover:text-gold`}>
               Login
             </Link>
-            <Link href="/auth/register" className={`text-[13px] font-medium ${navLinkClass} transition-all px-3 py-1.5 rounded hover:bg-white/5 hover:text-gold`}>
+            <Link href="/auth/register" className={`text-[12.5px] font-medium ${navLinkClass} transition-all px-2.5 py-1 rounded hover:bg-white/5 hover:text-gold`}>
               Register
             </Link>
-            <Link href="/rfq" className="inline-flex items-center gap-2 pl-5 pr-3 py-2.5 rounded-full bg-gold text-navy text-[13px] font-semibold hover:bg-[hsl(var(--gold-soft))] transition-all group premium-shadow">
+            <Link href="/rfq" className="inline-flex items-center gap-1.5 pl-4 pr-1.5 py-1.5 rounded-full bg-gold text-navy text-[12.5px] font-semibold hover:bg-[hsl(var(--gold-soft))] transition-all group premium-shadow">
               Request Quote
-              <span className="w-6 h-6 rounded-full bg-navy text-gold flex items-center justify-center group-hover:rotate-45 transition-transform">
-                <ArrowUpRight className="w-3.5 h-3.5" />
+              <span className="w-5.5 h-5.5 rounded-full bg-navy text-gold flex items-center justify-center group-hover:rotate-45 transition-transform">
+                <ArrowUpRight className="w-3 h-3" />
               </span>
             </Link>
           </div>
 
-          <div className="flex lg:hidden items-center gap-2">
-            <Link href="/rfq" aria-label="Request Quote" prefetch={false} className="inline-flex items-center gap-1.5 pl-3.5 pr-1.5 py-2 rounded-full bg-gold text-navy text-[12px] font-semibold hover:bg-[hsl(var(--gold-soft))] transition-all group">
+          <div className="flex lg:hidden items-center gap-1.5">
+            <Link href="/rfq" aria-label="Request Quote" prefetch={false} className="inline-flex items-center gap-1.5 pl-3 pr-1 py-1.5 rounded-full bg-gold text-navy text-[11.5px] font-semibold hover:bg-[hsl(var(--gold-soft))] transition-all group">
               Quote
-              <span className="w-5 h-5 rounded-full bg-navy text-gold flex items-center justify-center">
-                <ArrowUpRight className="w-3 h-3" />
+              <span className="w-4.5 h-4.5 rounded-full bg-navy text-gold flex items-center justify-center">
+                <ArrowUpRight className="w-2.5 h-2.5" />
               </span>
             </Link>
-            <button className={`${iconColorClass} p-2`} onClick={() => setOpen(true)} aria-label="Menu">
-              <Menu className="w-6 h-6" />
+            <button className={`${iconColorClass} p-1.5`} onClick={() => setOpen(true)} aria-label="Menu">
+              <Menu className="w-5.5 h-5.5" />
             </button>
           </div>
         </div>
