@@ -1,13 +1,35 @@
 import { NextResponse } from 'next/server'
-import { getAuthPayloadFromRequest } from './lib/auth-service'
+import jwt from 'jsonwebtoken'
 
 export const runtime = 'nodejs'
 
+function getAuthPayloadFromRequest(request) {
+  try {
+    let token = request.cookies.get('authToken')?.value;
+    if (!token) {
+      const authHeader = request.headers.get('authorization');
+      if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.substring(7);
+      }
+    }
+    const secret = process.env.JWT_SECRET;
+    if (!secret) throw new Error('JWT_SECRET not configured');
+    return jwt.verify(token, secret);
+  } catch (e) {
+    return null;
+  }
+}
+
+
 function getAllowedOrigins() {
   const fromEnv = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',').map((s) => s.trim()).filter(Boolean) : []
+  const prodDefaults = ['https://lokaaexports.com', 'https://www.lokaaexports.com']
   const devOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000']
   const isProd = process.env.NODE_ENV === 'production'
-  return isProd ? fromEnv : [...devOrigins, ...fromEnv]
+  if (isProd) {
+    return fromEnv.length ? fromEnv : prodDefaults
+  }
+  return [...devOrigins, ...fromEnv]
 }
 
 function setCorsHeaders(request, response) {
@@ -31,13 +53,15 @@ function setCorsHeaders(request, response) {
 
 function applySecurityHeaders(response) {
   response.headers.set('X-Frame-Options', 'SAMEORIGIN')
-  response.headers.set('Content-Security-Policy', "frame-ancestors 'self';")
-  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
   response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-XSS-Protection', '1; mode=block')
+  response.headers.set('X-DNS-Prefetch-Control', 'on')
+  // 2-year HSTS with preload flag
+  response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
-  // If some other layer sets these, overwrite/remove CORS-related defaults here.
-  // We intentionally do NOT set Access-Control-Allow-Origin here (CORS is set conditionally).
+  // We intentionally do NOT set Content-Security-Policy here — next.config.js handles it for pages
+  // We intentionally do NOT set Access-Control-Allow-Origin here (CORS is set conditionally)
   return response
 }
 
@@ -54,6 +78,47 @@ export function middleware(request) {
       applySecurityHeaders(res)
       return setCorsHeaders(request, res)
     }
+
+    // Apply RBAC for admin APIs (excluding auth routes like login)
+    if (pathname.startsWith('/api/admin') && !pathname.startsWith('/api/admin/auth')) {
+      const payload = getAuthPayloadFromRequest(request)
+      if (!payload) {
+        return new NextResponse(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } })
+      }
+
+      // Bypass granular checks for super-admin
+      const roles = payload.roles || (payload.role ? [payload.role] : [])
+      const isSuperAdmin = roles.some((r) => r.toLowerCase() === 'super-admin' || r.toLowerCase() === 'super admin')
+
+      if (!isSuperAdmin) {
+        // Simple granular RBAC mapping
+        const methodToAction = {
+          'GET': 'read',
+          'POST': 'write',
+          'PUT': 'write',
+          'PATCH': 'write',
+          'DELETE': 'write'
+        }
+        
+        let resource = ''
+        if (pathname.includes('/catalog/products')) resource = 'product'
+        else if (pathname.includes('/catalog/categories')) resource = 'category'
+        else if (pathname.includes('/rfqs')) resource = 'rfq'
+        else if (pathname.includes('/orders')) resource = 'order'
+        else if (pathname.includes('/customers')) resource = 'customer'
+        else if (pathname.includes('/rbac') || pathname.includes('/employees')) resource = 'employee'
+
+        if (resource) {
+          const requiredPermission = `${resource}:${methodToAction[request.method] || 'read'}`
+          const userPermissions = payload.permissions || []
+          
+          if (!userPermissions.includes(requiredPermission)) {
+            return new NextResponse(JSON.stringify({ error: `Forbidden: missing ${requiredPermission} permission` }), { status: 403, headers: { 'Content-Type': 'application/json' } })
+          }
+        }
+      }
+    }
+
     const res = NextResponse.next()
     applySecurityHeaders(res)
     return setCorsHeaders(request, res)
@@ -74,7 +139,8 @@ export function middleware(request) {
   const isPublicAuthPage =
     pathname === loginPath ||
     pathname.includes('verify-otp') ||
-    pathname.includes('forgot-password')
+    pathname.includes('forgot-password') ||
+    pathname.includes('reset-password')
 
   if (!payload && !isPublicAuthPage) {
     const redirectUrl = request.nextUrl.clone()
@@ -83,7 +149,7 @@ export function middleware(request) {
     return NextResponse.redirect(redirectUrl)
   }
 
-  if (payload && pathname === loginPath) {
+  if (payload && isPublicAuthPage) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = adminPath
     return NextResponse.redirect(redirectUrl)
@@ -92,6 +158,7 @@ export function middleware(request) {
   const res = NextResponse.next()
   applySecurityHeaders(res)
   return res
+
 }
 
 export const config = {

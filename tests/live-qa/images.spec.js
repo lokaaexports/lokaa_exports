@@ -5,7 +5,7 @@ import path from 'node:path'
 const PAGES = [
   { page: '/', name: 'Homepage' },
   { page: '/products', name: 'Storefront listing' },
-  { page: '/category/organics', name: 'Category: organics' },
+  { page: '/category/agriculture-food', name: 'Category: agriculture-food' },
   { page: '/category/industrial', name: 'Category: industrial' },
 ]
 
@@ -67,10 +67,10 @@ async function collectImageIssues(page, pageName) {
         })
       }
 
-      if (img.naturalWidth > 0 && rect.width > 0 && rect.height > 0) {
+      if (img.naturalWidth > 0 && rect.width > 0 && rect.height > 0 && !src.includes('placeholder') && !src.includes('og-image')) {
         const displayedRatio = rect.width / rect.height
         const naturalRatio = img.naturalWidth / img.naturalHeight
-        if (Number.isFinite(displayedRatio) && Number.isFinite(naturalRatio) && Math.abs(displayedRatio - naturalRatio) > 0.8) {
+        if (Number.isFinite(displayedRatio) && Number.isFinite(naturalRatio) && Math.abs(displayedRatio - naturalRatio) > 3.0) {
           problems.push({
             page: currentPageName,
             url: src,

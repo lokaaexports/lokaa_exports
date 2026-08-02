@@ -9,12 +9,8 @@ node_modules/
 /node_modules
 /.pnp
 .pnp.js
-.yarn/install-state.gz
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+yarn.lock
+.yarnrc
 
 # Testing
 /coverage
@@ -30,14 +26,18 @@ next-env.d.ts
 dist/
 dist
 
-# Environment files (comprehensive coverage)
+# Environment files (comprehensive security coverage)
+.env
+.env*.local
+.env.local
+.env.development
+.env.production
+!.env.example
 *token.json*
 *credentials.json*
 
 # Logs and debug files
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 .pnpm-debug.log*
 dump.rdb
 
@@ -84,3 +84,9 @@ node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
 credentials.json
 *.key
 .credentials
+
+# Generated and temporary files
+public/_next/
+scratch/
+test-results/
+

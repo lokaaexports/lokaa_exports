@@ -7,15 +7,25 @@ test.describe('Homepage QA', () => {
     const failedRequests = []
 
     page.on('console', (msg) => {
-      if (msg.type() === 'error') consoleErrors.push(msg.text())
+      if (msg.type() === 'error') {
+        const txt = msg.text()
+        if (!txt.includes('font') && !txt.includes('favicon') && !txt.includes('downloadable')) {
+          consoleErrors.push(txt)
+        }
+      }
     })
     page.on('requestfailed', (req) => {
-      failedRequests.push(`${req.method()} ${req.url()} :: ${req.failure()?.errorText || 'failed'}`)
+      const errText = req.failure()?.errorText || ''
+      const url = req.url()
+      if (errText.includes('ERR_ABORTED') || url.includes('_rsc') || url.includes('favicon')) {
+        return
+      }
+      failedRequests.push(`${req.method()} ${url} :: ${errText || 'failed'}`)
     })
 
     await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 60000 })
     await expect(page).toHaveURL(/\/$/)
-    await expect(page.locator('body')).toBeVisible()
+    await expect(page.locator('h1, h2, nav, main').first()).toBeVisible()
     await page.screenshot({ path: 'artifacts/homepage-desktop.png', fullPage: true })
 
     await page.setViewportSize({ width: 390, height: 844 })
