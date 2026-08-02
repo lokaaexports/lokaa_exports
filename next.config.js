@@ -52,7 +52,7 @@ const nextConfig = {
         ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
         : "script-src 'self' 'unsafe-inline'",
       // Styles: inline styles needed by many UI libraries
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:",
       // Fonts from Google Fonts CDN
       "font-src 'self' https://fonts.gstatic.com data:",
       // Images: allow self, data URIs, blobs, and approved CDN sources.
