@@ -10,7 +10,7 @@ const userLookupCache = new Map()
 const USER_CACHE_TTL_MS = 0
 
 function normalizeRole(role: any) {
-  return String(role || '').trim().toLowerCase().replace(/_/g, '-')
+  return String(role || '').trim().toLowerCase().replace(/[\s_]+/g, '-')
 }
 
 function normalizeEmail(email: any) {
