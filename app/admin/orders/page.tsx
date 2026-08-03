@@ -218,11 +218,35 @@ export default function OrdersPage() {
               </select>
               <input value={form.reference} onChange={(event) => setForm({ ...form, reference: event.target.value })} placeholder="Reference" className="w-full rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
               <div className="grid gap-3 md:grid-cols-2">
-                <input type="number" value={form.subtotal} onChange={(event) => setForm({ ...form, subtotal: event.target.value })} placeholder="Subtotal" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
-                <input type="number" value={form.tax} onChange={(event) => setForm({ ...form, tax: event.target.value })} placeholder="Tax" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
-                <input type="number" value={form.discount} onChange={(event) => setForm({ ...form, discount: event.target.value })} placeholder="Discount" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
-                <input type="number" value={form.shipping} onChange={(event) => setForm({ ...form, shipping: event.target.value })} placeholder="Shipping" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
-                <input type="number" value={form.total} onChange={(event) => setForm({ ...form, total: event.target.value })} placeholder="Total" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700 md:col-span-2" />
+                <input type="number" value={form.subtotal} onChange={(event) => {
+                  const sub = parseFloat(event.target.value) || 0;
+                  const tx = parseFloat(form.tax) || 0;
+                  const disc = parseFloat(form.discount) || 0;
+                  const sh = parseFloat(form.shipping) || 0;
+                  setForm({ ...form, subtotal: event.target.value, total: String(sub + tx + sh - disc) });
+                }} placeholder="Subtotal" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
+                <input type="number" value={form.tax} onChange={(event) => {
+                  const sub = parseFloat(form.subtotal) || 0;
+                  const tx = parseFloat(event.target.value) || 0;
+                  const disc = parseFloat(form.discount) || 0;
+                  const sh = parseFloat(form.shipping) || 0;
+                  setForm({ ...form, tax: event.target.value, total: String(sub + tx + sh - disc) });
+                }} placeholder="Tax" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
+                <input type="number" value={form.discount} onChange={(event) => {
+                  const sub = parseFloat(form.subtotal) || 0;
+                  const tx = parseFloat(form.tax) || 0;
+                  const disc = parseFloat(event.target.value) || 0;
+                  const sh = parseFloat(form.shipping) || 0;
+                  setForm({ ...form, discount: event.target.value, total: String(sub + tx + sh - disc) });
+                }} placeholder="Discount" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
+                <input type="number" value={form.shipping} onChange={(event) => {
+                  const sub = parseFloat(form.subtotal) || 0;
+                  const tx = parseFloat(form.tax) || 0;
+                  const disc = parseFloat(form.discount) || 0;
+                  const sh = parseFloat(event.target.value) || 0;
+                  setForm({ ...form, shipping: event.target.value, total: String(sub + tx + sh - disc) });
+                }} placeholder="Shipping" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
+                <input type="number" value={form.total} onChange={(event) => setForm({ ...form, total: event.target.value })} placeholder="Total (Auto-calculates)" className="rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700 md:col-span-2" />
               </div>
               <input value={form.currency} onChange={(event) => setForm({ ...form, currency: event.target.value })} placeholder="Currency" className="w-full rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
               <input value={form.shipmentAddress} onChange={(event) => setForm({ ...form, shipmentAddress: event.target.value })} placeholder="Shipment address" className="w-full rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
@@ -247,7 +271,7 @@ export default function OrdersPage() {
                 </select>
               </div>
               <textarea value={form.notes} onChange={(event) => setForm({ ...form, notes: event.target.value })} placeholder="Notes" rows={4} className="w-full rounded-2xl border border-slate-200 bg-transparent px-4 py-2 text-sm outline-none dark:border-slate-700" />
-              <button onClick={save} disabled={saving || !form.customerId || !form.total} className="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+              <button onClick={save} disabled={saving || !form.customerId} className="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                 Save order
               </button>
