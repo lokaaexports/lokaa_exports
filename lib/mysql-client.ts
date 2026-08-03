@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import { createPool } from 'mysql2/promise'
 
 let pool: any = null
@@ -6,9 +5,8 @@ let pool: any = null
 /**
  * Get or create the MySQL connection pool.
  *
- * Loads environment variables via dotenv. If any required variable is missing,
- * fallback defaults are used (suitable for local development). This prevents
- * the runtime exception that caused the admin stats route to fail.
+ * Environment variables are loaded automatically by Next.js from .env/.env.local.
+ * Fallback defaults are used when a variable is missing (suitable for local development).
  */
 export async function getMysqlPool() {
   if (pool) return pool
