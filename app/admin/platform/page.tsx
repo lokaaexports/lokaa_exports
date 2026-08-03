@@ -16,7 +16,7 @@ export default function PlatformPage() {
       title="Enterprise business platform"
       description="This is the operational front door for the updated Lokaa Exports system. It connects PIM, DAM, workflow, approvals, notifications, search, and the rest of the business domains."
       links={[
-        { href: '/admin/pim', label: 'Open PIM' },
+        { href: '/admin/catalog', label: 'Open PIM' },
         { href: '/admin/media', label: 'Open DAM' },
         { href: '/admin/search', label: 'Global Search' },
         { href: '/admin/notifications', label: 'Notifications' },
