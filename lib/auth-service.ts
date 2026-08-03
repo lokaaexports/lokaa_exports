@@ -122,7 +122,7 @@ export async function verifyAdmin(request: any, requiredRole = 'admin') {
     }
   }
 
-  return payload
+  return { ...payload, id: payload.sub }
 }
 
 export async function verifyRole(request: any, allowedRoles: string[] = []) {
