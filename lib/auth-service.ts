@@ -122,7 +122,8 @@ export async function verifyAdmin(request: any, requiredRole = 'admin') {
     }
   }
 
-  return { ...payload, id: payload.sub }
+  // Ensure user identifier is correctly set using either `id` or `sub`
+  return { ...payload, id: payload.id ?? payload.sub }
 }
 
 export async function verifyRole(request: any, allowedRoles: string[] = []) {
